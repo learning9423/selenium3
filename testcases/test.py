@@ -12,7 +12,7 @@ class register(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.driver = webdriver.Firefox()
+        cls.driver = webdriver.Chrome()
         # cls.driver.implicitly_wait(30)
         cls.driver.maximize_window()
         cls.driver.get('https://m-t1.vova.com.hk/index.php?q=admin/register/index')
@@ -26,7 +26,7 @@ class register(unittest.TestCase):
         sponsor.select_by_index(3)
         WebDriverWait(self.driver, 10).until(expected_conditions.title_is('注册成为卖家'))
         self.driver.find_element_by_xpath("//*[@name='is_agreed']").click()
-        WebDriverWait(self.driver, 10).until(expected_conditions.text_to_be_present_in_element(By.ID,'btn_submit'),'确认')
+        WebDriverWait(self.driver, 10).until(expected_conditions.text_to_be_present_in_element((By.XPATH,"//*[@id='btn_submit']"),"确认"))
         self.driver.find_element_by_xpath("//*[@id='btn_submit']").click()
         alert = self.driver.switch_to.alert
         print(alert.text)
