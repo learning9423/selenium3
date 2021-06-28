@@ -1,23 +1,37 @@
 import unittest
 from time import sleep
-
 from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.select import Select
+from selenium.webdriver.support.wait import WebDriverWait
+
 
 class register(unittest.TestCase):
     '''注册账号'''
 
     @classmethod
     def setUpClass(cls):
-        cls.driver=webdriver.Firefox()
+        cls.driver = webdriver.Firefox()
         # cls.driver.implicitly_wait(30)
         cls.driver.maximize_window()
         cls.driver.get('https://m-t1.vova.com.hk/index.php?q=admin/register/index')
 
-    def test_register_user(self):
-        sponsor=self.driver.find_elements_by_xpath("//*[@id='settle_sponsor']")
-        for i in sponsor:
+    @classmethod
+    def tearDownClass(cls):
+        cls.driver.quit()
 
-            print(i.text)
+    def test_register_user(self):
+        sponsor = Select(self.driver.find_element_by_xpath("//*[@id='settle_sponsor']"))
+        sponsor.select_by_index(3)
+        WebDriverWait(self.driver, 10).until(expected_conditions.title_is('注册成为卖家'))
+        self.driver.find_element_by_xpath("//*[@name='is_agreed']").click()
+        WebDriverWait(self.driver, 10).until(expected_conditions.text_to_be_present_in_element(By.ID,'btn_submit'),'确认')
+        self.driver.find_element_by_xpath("//*[@id='btn_submit']").click()
+        alert = self.driver.switch_to.alert
+        print(alert.text)
+        alert.dismiss()
+        sleep(5)
 
     # driver.find_element_by_class_name('email_verify_code').send_keys('123456')
     # driver.find_element_by_class_name('phone').send_keys('15667021976')
@@ -37,6 +51,8 @@ class register(unittest.TestCase):
     # sleep(5)
     # search.submit()
     # driver.quit()
+
+
 # navigate to the application home page
 # driverget("http://demo.magentocommerce.com/")
 # get the search textbox
