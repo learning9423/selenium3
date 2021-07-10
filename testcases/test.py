@@ -12,8 +12,11 @@ class register(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.driver = webdriver.Chrome()
-        # cls.driver.implicitly_wait(30)
+        desired_caps={}
+        desired_caps['platform']='WINDOWS'
+        desired_caps['browserName']='firefox'
+        cls.driver = webdriver.Remote('http://172.16.100.13:4444/wd/hub',desired_caps)
+        cls.driver.implicitly_wait(30)
         cls.driver.maximize_window()
         cls.driver.get('https://m-t1.vova.com.hk/index.php?q=admin/register/index')
 
